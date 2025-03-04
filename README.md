@@ -22,4 +22,4 @@ LINEで共有できるAI診断ツールです。簡単な質問に答えるだ�
 
 ## デプロイ先
 
-[https://setsu3636.github.io/ai-diagnosis-tool/](https://setsu3636.github.io/ai-diagnosis-tool/)
+[https://setsu3636.github.io/ai-diagnosis-tool/](https://setsu3636.github.io/ai-diagnosis-tool/)[ai-diagnosis-tool.txt](https://github.com/user-attachments/files/19063365/ai-diagnosis-tool.txt)
