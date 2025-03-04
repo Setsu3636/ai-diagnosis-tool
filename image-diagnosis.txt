@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>画像診断ツール</title>
+    <title>AI診断ツール</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,32 +18,26 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: inline-block;
             width: 80%;
-            max-width: 600px;
+            max-width: 400px;
         }
         .question {
             font-size: 18px;
             margin-bottom: 20px;
         }
-        .image-options {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-        .image-option {
-            cursor: pointer;
-            transition: transform 0.3s;
-            width: 45%;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .image-option:hover {
-            transform: scale(1.05);
-        }
-        .image-option img {
-            width: 100%;
-            height: auto;
+        .options button {
             display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .options button:hover {
+            background: #0056b3;
         }
         .result {
             display: none;
@@ -51,113 +45,52 @@
             font-weight: bold;
             margin-top: 20px;
         }
-        .result-image {
-            max-width: 100%;
-            margin-top: 20px;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="question-container">
-            <p class="question" id="question-text">あなたが好きな風景はどちらですか？</p>
-            <div class="image-options" id="options-container">
-                <div class="image-option" onclick="selectOption(1)">
-                    <img src="https://example.com/image1.jpg" alt="山の風景">
-                </div>
-                <div class="image-option" onclick="selectOption(0)">
-                    <img src="https://example.com/image2.jpg" alt="海の風景">
-                </div>
+            <p class="question" id="question-text">AIに興味がありますか？</p>
+            <div class="options" id="options-container">
+                <button onclick="selectOption(1)">はい</button>
+                <button onclick="selectOption(0)">いいえ</button>
             </div>
         </div>
-        <div id="result-container" style="display:none;">
-            <p class="result" id="result-text"></p>
-            <img id="result-image" class="result-image" src="" alt="結果の画像">
-        </div>
+        <p class="result" id="result-text"></p>
     </div>
+
     <script>
         let score = 0;
         let currentQuestion = 0;
         const questions = [
-            {
-                text: "あなたが好きな風景はどちらですか？",
-                images: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"]
-            },
-            {
-                text: "どちらの色が好きですか？",
-                images: ["https://example.com/image3.jpg", "https://example.com/image4.jpg"]
-            },
-            {
-                text: "どちらの活動が楽しそうですか？",
-                images: ["https://example.com/image5.jpg", "https://example.com/image6.jpg"]
-            }
+            "AIに興味がありますか？",
+            "すでにAIを活用していますか？",
+            "AIを使って収益化を目指していますか？"
         ];
-        
-        const results = [
-            {
-                text: "あなたは「冒険家タイプ」です！新しい体験を求める傾向があります。",
-                image: "https://example.com/result1.jpg"
-            },
-            {
-                text: "あなたは「リラックスタイプ」です。静かな環境で落ち着くことを好みます。",
-                image: "https://example.com/result2.jpg"
-            },
-            {
-                text: "あなたは「バランスタイプ」です。状況に応じて柔軟に対応できます。",
-                image: "https://example.com/result3.jpg"
-            }
-        ];
-        
-        function updateQuestion() {
-            document.getElementById("question-text").textContent = questions[currentQuestion].text;
-            const optionsContainer = document.getElementById("options-container");
-            optionsContainer.innerHTML = "";
-            
-            questions[currentQuestion].images.forEach((imgSrc, index) => {
-                const optionDiv = document.createElement("div");
-                optionDiv.className = "image-option";
-                optionDiv.onclick = function() { selectOption(index); };
-                
-                const img = document.createElement("img");
-                img.src = imgSrc;
-                img.alt = `選択肢${index + 1}`;
-                
-                optionDiv.appendChild(img);
-                optionsContainer.appendChild(optionDiv);
-            });
-        }
         
         function selectOption(value) {
             score += value;
             currentQuestion++;
             if (currentQuestion < questions.length) {
-                updateQuestion();
+                document.getElementById("question-text").textContent = questions[currentQuestion];
             } else {
                 showResult();
             }
         }
-        
+
         function showResult() {
             document.getElementById("question-container").style.display = "none";
-            document.getElementById("result-container").style.display = "block";
-            
-            let resultIndex = 0;
+            let resultText = "";
             if (score >= 2) {
-                resultIndex = 0; // 冒険家タイプ
+                resultText = "あなたはAI成功者タイプです！AIを活用する素質があります！";
             } else if (score === 1) {
-                resultIndex = 2; // バランスタイプ
+                resultText = "あなたはAI迷子タイプです。方向性を見直しましょう！";
             } else {
-                resultIndex = 1; // リラックスタイプ
+                resultText = "あなたはAI未開拓タイプです。これから学ぶことで大きなチャンスがあります！";
             }
-            
-            document.getElementById("result-text").textContent = results[resultIndex].text;
+            document.getElementById("result-text").textContent = resultText;
             document.getElementById("result-text").style.display = "block";
-            document.getElementById("result-image").src = results[resultIndex].image;
         }
-        
-        // 初期表示
-        updateQuestion();
     </script>
 </body>
 </html>
